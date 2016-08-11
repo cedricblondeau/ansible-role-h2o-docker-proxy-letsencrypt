@@ -1,0 +1,68 @@
+# Base conf
+user: nobody
+http2-reprioritize-blocking-assets: ON
+send-server-name: OFF
+access-log: /dev/stdout
+error-log: /dev/stderr
+
+# Local (non-docker) hosts
+hosts:
+  default:
+    listen:
+      port: 80
+    paths:
+      /:
+        file.dir: /srv/www/default
+
+{{ define "proxy" }}
+      /:
+        proxy.preserve-host: ON
+        proxy.timeout.keepalive: 0
+        {{ if .Address }}
+        {{ if (and .Container.Node.ID .Address.HostPort) }}
+        proxy.reverse.url: "http://{{ .Container.Node.Address.IP }}:{{ .Address.HostPort }}"
+        {{ else }}
+        proxy.reverse.url: "http://{{ .Address.IP }}:{{ .Address.Port }}"
+        {{ end }}
+        {{ else }}
+        proxy.reverse.url: "http://{{ .Container.IP }} down"
+        {{ end }}
+        setenv:
+          HTTP_PROXY: ""
+{{ end }}
+
+{{ define "host" }}
+  "{{ .Host }}:80":
+    listen:
+      port: 80
+    paths:
+      /.well-known/acme-challenge:
+        file.dir: /srv/www/letsencrypt/{{ .Host }}/.well-known/acme-challenge/
+  {{ if (exists (printf "/etc/letsencrypt/live/%s/privkey.pem" .Host)) }}
+      "/":
+        redirect: https://{{ .Host }}/
+  "{{ .Host }}:443":
+    listen:
+      port: 443
+      ssl:
+        certificate-file: "/etc/letsencrypt/live/{{ .Host }}/fullchain.pem"
+        key-file: "/etc/letsencrypt/live/{{ .Host }}/privkey.pem"
+        dh-file: "/etc/letsencrypt/dhparam.pem"
+    paths:
+      {{ template "proxy" .Proxy }}
+  {{ end }}
+{{ end }}
+
+{{ range $host, $containers := groupByMulti $ "Env.VIRTUAL_HOST" "," }}
+{{ if (ne $host "") }}
+hosts:
+{{ range $container := $containers }}
+  {{ $addrLen := len $container.Addresses }}
+  {{ if eq $addrLen 1 }}
+    {{ $address := index $container.Addresses 0 }}
+    {{ $proxy := (dict "Container" $container "Address" $address) }}
+    {{ template "host" (dict "Host" $host "Proxy" $proxy) }}
+  {{ end }}
+{{ end }}
+{{ end }}
+{{ end }}
