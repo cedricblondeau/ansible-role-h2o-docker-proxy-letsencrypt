@@ -17,22 +17,20 @@ under the name `h2o-docker-proxy-letsencrypt`:
 git clone https://github.com/cedricblondeau/ansible-role-h2o-docker-proxy-letsencrypt roles/h2o-docker-proxy-letsencrypt
 ```
 
-Then, configure (`letsencrypt_email` is the only mandatory variable) and add this role :
+Then, configure (`letsencrypt_email` is the only mandatory variable) and add the role to your playbook:
 
 ```yaml
 ---
-- name: Set up a docker container proxy using H2O
+- name: Set up an automated H2O proxy for docker containers with automatic creation of Let's Encrypt certificates
   hosts: all
   become: true
-  become_user: root
-  become_method: sudo
   vars:
     letsencrypt_email: youremail_here@domain.tld
   roles:
     - h2o-docker-proxy-letsencrypt
 ```
 
-Finally, execute your playbook and deploy your app containers.
+Finally, execute your playbook and deploy your apps.
 
 Example :
 
