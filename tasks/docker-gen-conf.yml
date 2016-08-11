@@ -1,0 +1,12 @@
+---
+- name: Create /etc/docker-gen directory
+  file: path=/etc/docker-gen/templates state=directory mode=0755
+
+- name: Copy h2o.conf template file
+  copy: src=docker-gen/templates/h2o.tmpl dest=/etc/docker-gen/templates/h2o.tmpl
+
+- name: Copy domains.conf template file
+  copy: src=docker-gen/templates/domains.tmpl dest=/etc/docker-gen/templates/domains.tmpl
+
+- name: Copy docker-gen.cfg
+  copy: src=docker-gen/docker-gen.cfg dest=/etc/docker-gen/docker-gen.cfg

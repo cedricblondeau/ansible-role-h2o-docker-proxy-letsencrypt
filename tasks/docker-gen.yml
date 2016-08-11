@@ -5,3 +5,5 @@
 
 - include: docker-gen-install.yml
   when: docker_gen_bin_file.stat.exists == False
+
+- include: docker-gen-conf.yml
