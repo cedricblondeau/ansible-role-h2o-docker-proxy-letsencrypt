@@ -7,3 +7,4 @@
   when: docker_gen_bin_file.stat.exists == False
 
 - include: docker-gen-conf.yml
+- include: docker-gen-generate.yml

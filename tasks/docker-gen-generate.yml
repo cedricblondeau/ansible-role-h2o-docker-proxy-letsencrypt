@@ -1,0 +1,11 @@
+---
+- name: Ensure /etc/h2o directory exists
+  file: path=/etc/h2o state=directory mode=0700
+
+- name: Check if h2o.conf exists
+  stat: path=/etc/h2o/h2o.conf
+  register: h2o_conf_file
+
+- name: Create h2o.conf if not present yet
+  shell: docker-gen /etc/docker-gen/templates/h2o.tmpl /etc/h2o/h2o.conf
+  when: h2o_conf_file.stat.exists == False
