@@ -1,0 +1,25 @@
+---
+- name: Create letsencrypt webroot directory
+  file: path=/srv/www/letsencrypt state=directory mode=0755 owner=letsencrypt
+
+- name: Create letsencrypt var/lib directory
+  file: path=/var/lib/letsencrypt state=directory mode=700 owner=letsencrypt
+
+- name: Copy update script
+  copy: src=scripts/letsencrypt-docker-gen-update.sh dest=/usr/local/bin/letsencrypt-docker-gen-update.sh mode=700
+
+- name: Ensure letsencrypt log directory exists
+  file: path=/var/log/letsencrypt state=directory mode=700
+
+- name: Ensure log file exists
+  file: path=/var/log/letsencrypt/docker-gen-update.log state=touch mode=600
+
+- name: Ensure we have a Let's encrypt container ready
+  docker_container:
+    name: letsencrypt-docker-gen-updater
+    state: present
+    image: "{{ letsencrypt_image }}"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /srv/www/letsencrypt:/srv/www/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt

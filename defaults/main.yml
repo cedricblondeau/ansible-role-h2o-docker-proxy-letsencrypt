@@ -1,2 +1,3 @@
 ---
+letsencrypt_image: cedricbl/letsencrypt-webroot
 letsencrypt_email: contact@example.net
