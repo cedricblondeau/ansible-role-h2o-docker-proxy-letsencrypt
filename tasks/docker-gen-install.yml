@@ -1,0 +1,9 @@
+---
+- name: Download docker-gen
+  get_url: url=https://github.com/jwilder/docker-gen/releases/download/0.7.3/docker-gen-linux-amd64-0.7.3.tar.gz dest=~/docker-gen.tar.gz
+
+- name: Install docker-gen
+  shell: tar -xf ~/docker-gen.tar.gz -C /usr/local/bin
+
+- name: Delete archive
+  file: path=~//docker-gen.tar.gz state=absent
