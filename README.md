@@ -14,7 +14,7 @@ First, clone this repository in your roles path (usually in a `roles` directory 
 under the name `h2o-docker-proxy-letsencrypt`:
 
 ```bash
-git clone https://github.com/cedricblondeau/ansible-role-h2o-docker-proxy-letsencrypt roles/h2o-docker-proxy-letsencrypt
+git submodule add https://github.com/cedricblondeau/ansible-role-h2o-docker-proxy-letsencrypt roles/h2o-docker-proxy-letsencrypt
 ```
 
 Then, configure (`letsencrypt_email` is the only mandatory variable) and add the role to your playbook:
