@@ -1,2 +1,3 @@
 ---
+- include: letsencrypt-conf.yml
 - include: docker-gen.yml
