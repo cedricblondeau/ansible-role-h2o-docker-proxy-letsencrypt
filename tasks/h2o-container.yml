@@ -1,0 +1,30 @@
+---
+- name: Ensure /etc/h2o directory exists
+  file: path=/etc/h2o state=directory
+
+- name: Create www directory
+  file: path=/srv/www state=directory mode=0755
+
+- name: Create default www directory
+  file: path=/srv/www/default state=directory mode=0755
+
+- name: Copy index.html file
+  copy: src=index.html dest=/srv/www/default/index.html
+
+- name: Ensure we have a h2o container running
+  docker_container:
+    name: h2o
+    state: started
+    restart: yes
+    image: "{{ h2o_image }}"
+    ports:
+     - "80:80"
+     - "443:443"
+    volumes:
+      - /etc/h2o:/etc/h2o:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /srv/www:/srv/www:ro
+    command:
+      - h2o
+      - -m
+      - master

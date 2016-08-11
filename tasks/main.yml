@@ -2,3 +2,4 @@
 - include: letsencrypt-conf.yml
 - include: docker-gen.yml
 - include: letsencrypt-container.yml
+- include: h2o-container.yml
