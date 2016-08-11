@@ -1,0 +1,6 @@
+---
+- name: Copy service file
+  copy: src=docker-gen/docker-gen.service dest=/lib/systemd/system/docker-gen.service
+
+- name: Ensure service is started
+  service: name=docker-gen state=started

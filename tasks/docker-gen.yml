@@ -8,3 +8,4 @@
 
 - include: docker-gen-conf.yml
 - include: docker-gen-generate.yml
+- include: docker-gen-service.yml
