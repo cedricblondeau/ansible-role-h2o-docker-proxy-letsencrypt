@@ -52,12 +52,12 @@ or by using the --expose flag to docker run or docker create.
 
 ## Deployed containers
 
-The role two separated docker containers :
+The role uses two separated docker images:
 
 - [lkwg82/h2o-http2-server](https://github.com/lkwg82/h2o.docker)
 - [cedricbl/letsencrypt-webroot](https://github.com/cedricblondeau/docker-letsencrypt-webroot)
 
-If you want to build the images yourself you can easily override the images repository names:
+If you want to build the images yourself you can easily override the repositories:
 
 ```yaml
 h2o_image: lkwg82/h2o-http2-server
