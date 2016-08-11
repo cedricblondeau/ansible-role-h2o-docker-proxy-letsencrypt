@@ -9,7 +9,7 @@ DOMAINS_COUNT=${#DOMAINS[@]}
 if [ $DOMAINS_COUNT -gt 0 ]
 then
     echo "Updating certificates"
-    docker start -a letsencrypt-docker-gen
+    docker start -a letsencrypt-docker-gen-updater
 
     echo "Updating H2O conf"
     docker-gen -onlyexposed /etc/docker-gen/templates/h2o.tmpl /etc/h2o/h2o.conf
