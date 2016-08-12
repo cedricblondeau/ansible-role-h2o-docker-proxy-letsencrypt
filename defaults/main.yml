@@ -2,3 +2,4 @@
 h2o_image: lkwg82/h2o-http2-server
 letsencrypt_image: cedricbl/letsencrypt-webroot
 letsencrypt_email: contact@example.net
+letsencrypt_mode: "production"
