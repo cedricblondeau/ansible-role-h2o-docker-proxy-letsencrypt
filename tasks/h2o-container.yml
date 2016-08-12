@@ -15,7 +15,6 @@
   docker_container:
     name: h2o
     state: started
-    restart: yes
     image: "{{ h2o_image }}"
     ports:
      - "80:80"
