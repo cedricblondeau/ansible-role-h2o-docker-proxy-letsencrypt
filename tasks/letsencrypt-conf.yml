@@ -8,8 +8,12 @@
 - name: Copy cli.ini
   template: src=cli.ini dest=/etc/letsencrypt/cli.ini owner=letsencrypt
 
+- stat: path=/etc/letsencrypt/domains.conf
+  register: letsencrypt_domains_conf_file
+
 - name: Touch domains.conf if absent
   file: path=/etc/letsencrypt/domains.conf state=touch mode=600 owner=letsencrypt
+  when: letsencrypt_domains_conf_file.stat.exists == False
 
 - name: Check if dhparam file exists
   stat: path=/etc/letsencrypt/dhparam.pem
