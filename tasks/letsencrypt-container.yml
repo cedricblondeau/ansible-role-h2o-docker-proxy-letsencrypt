@@ -11,8 +11,12 @@
 - name: Ensure letsencrypt log directory exists
   file: path=/var/log/letsencrypt state=directory mode=700
 
+- stat: path=/var/log/letsencrypt/docker-gen-update.log
+  register: letsencrypt_log_file
+
 - name: Ensure log file exists
   file: path=/var/log/letsencrypt/docker-gen-update.log state=touch mode=600
+  when: letsencrypt_log_file.stat.exists == False
 
 - name: Ensure we have a Let's encrypt container ready
   docker_container:
