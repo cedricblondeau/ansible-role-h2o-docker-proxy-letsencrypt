@@ -1,6 +1,6 @@
 ---
 - name: Create letsencrypt user
-  user: name=letsencrypt state=present system=yes uid=1250
+  user: name=letsencrypt state=present system=yes uid=1250 createhome=no
 
 - name: Create /etc/letsencrypt directory
   file: path=/etc/letsencrypt state=directory mode=0700 owner=letsencrypt
