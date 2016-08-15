@@ -10,6 +10,18 @@
   shell: docker-gen /etc/docker-gen/templates/h2o.tmpl /etc/h2o/h2o.conf
   when: h2o_conf_file.stat.exists == False
 
+- name: Ensure /etc/h2o/ssl directory exists
+  file: path=/etc/h2o/ssl state=directory mode=0700
+
+- stat: path=/etc/h2o/ssl/self-signed.crt
+  register: h2o_self_signed_cert_file
+
+- name: Create a self-signed SSL cert
+  command: openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+          -keyout /etc/h2o/ssl/self-signed.key -out /etc/h2o/ssl/self-signed.crt \
+          -subj "/C=US/ST=NY/L=NYC/O=IT/CN={{ ansible_fqdn }}"
+  when: h2o_self_signed_cert_file.stat.exists == False
+
 - name: Create www directory
   file: path=/srv/www state=directory mode=0755 owner=root
 

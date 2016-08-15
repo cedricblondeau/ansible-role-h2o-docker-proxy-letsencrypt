@@ -7,9 +7,17 @@ error-log: /dev/stderr
 
 # Local (non-docker) hosts
 hosts:
+  # Listen to both HTTP and HTTPS on start
   default:
     listen:
+      host: 0.0.0.0
       port: 80
+    listen:
+      host: 0.0.0.0
+      port: 443
+      ssl:
+        key-file: /etc/h2o/ssl/self-signed.key
+        certificate-file: /etc/h2o/ssl/self-signed.crt
     paths:
       /:
         file.dir: /srv/www/default
@@ -34,6 +42,7 @@ hosts:
 {{ define "host" }}
   "{{ .Host }}:80":
     listen:
+      host: 0.0.0.0
       port: 80
     paths:
       /.well-known/acme-challenge:
@@ -43,6 +52,7 @@ hosts:
         redirect: https://{{ .Host }}/
   "{{ .Host }}:443":
     listen:
+      host: 0.0.0.0
       port: 443
       ssl:
         certificate-file: "/etc/letsencrypt/live/{{ .Host }}/fullchain.pem"
