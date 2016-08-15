@@ -1,5 +1,14 @@
 ---
-- include: letsencrypt-conf.yml
-- include: docker-gen.yml
-- include: letsencrypt-container.yml
-- include: h2o-container.yml
+- name: Check if docker-gen is installed
+  stat: path=/usr/local/bin/docker-gen
+  register: docker_gen_bin_file
+
+- include: docker-gen-install.yml
+  when: docker_gen_bin_file.stat.exists == False
+
+- include: docker-gen-conf.yml
+
+- include: letsencrypt.yml
+- include: h2o.yml
+
+- include: docker-gen-service.yml

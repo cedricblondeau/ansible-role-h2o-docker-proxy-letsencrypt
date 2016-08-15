@@ -1,4 +1,28 @@
 ---
+- name: Create letsencrypt user
+  user: name=letsencrypt state=present system=yes uid=1250 createhome=no
+
+- name: Create /etc/letsencrypt directory
+  file: path=/etc/letsencrypt state=directory mode=0700 owner=letsencrypt
+
+- name: Copy cli.ini
+  template: src=cli.ini dest=/etc/letsencrypt/cli.ini owner=letsencrypt
+
+- stat: path=/etc/letsencrypt/domains.conf
+  register: letsencrypt_domains_conf_file
+
+- name: Touch domains.conf if absent
+  file: path=/etc/letsencrypt/domains.conf state=touch mode=600 owner=letsencrypt
+  when: letsencrypt_domains_conf_file.stat.exists == False
+
+- name: Check if dhparam file exists
+  stat: path=/etc/letsencrypt/dhparam.pem
+  register: dhparam_file
+
+- name: Generate dhparam file (could take a while...)
+  shell: openssl dhparam -out /etc/letsencrypt/dhparam.pem 2048 && chmod 400 /etc/letsencrypt/dhparam.pem
+  when: dhparam_file.stat.exists == False
+
 - name: Create letsencrypt webroot directory
   file: path=/srv/www/letsencrypt state=directory mode=0755 owner=letsencrypt
 
