@@ -11,7 +11,7 @@
   when: h2o_conf_file.stat.exists == False
 
 - name: Create www directory
-  file: path=/srv/www state=directory mode=0755
+  file: path=/srv/www state=directory mode=0755 owner=root
 
 - name: Create default www directory
   file: path=/srv/www/default state=directory mode=0755
