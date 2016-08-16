@@ -42,6 +42,7 @@ hosts:
 {{ end }}
 
 {{ define "host" }}
+hosts:
   "{{ .Host }}:80":
     listen:
       host: 0.0.0.0
@@ -67,11 +68,15 @@ hosts:
 
 {{ range $host, $containers := groupByMulti $ "Env.VIRTUAL_HOST" "," }}
 {{ if (ne $host "") }}
-hosts:
 {{ range $container := $containers }}
   {{ $addrLen := len $container.Addresses }}
   {{ if eq $addrLen 1 }}
     {{ $address := index $container.Addresses 0 }}
+    {{ $proxy := (dict "Container" $container "Address" $address) }}
+    {{ template "host" (dict "Host" $host "Proxy" $proxy) }}
+  {{ else }}
+    {{ $port := coalesce $container.Env.VIRTUAL_PORT "80" }}
+    {{ $address := where $container.Addresses "Port" $port | first }}
     {{ $proxy := (dict "Container" $container "Address" $address) }}
     {{ template "host" (dict "Host" $host "Proxy" $proxy) }}
   {{ end }}

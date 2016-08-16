@@ -44,9 +44,14 @@ The VIRTUAL_HOST environment variable is mandatory and is used for:
 - Routing the HTTP requests to the containers
 - Creating Let's encrypt certificates
 
-The containers being proxied must expose the port to be proxied (only one),
+The containers being proxied must expose the port to be proxied,
 either by using the EXPOSE directive in their Dockerfile 
 or by using the --expose flag to docker run or docker create.
+
+If your container exposes multiple ports, 
+the role will default to the service running on port 80.
+If you need to specify a different port, 
+you can set a VIRTUAL_PORT env var to select a different one.
 
 ## Deployed containers
 
