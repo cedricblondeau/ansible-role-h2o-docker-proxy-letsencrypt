@@ -19,7 +19,7 @@
 - name: Create a self-signed SSL cert
   command: openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
           -keyout /etc/h2o/ssl/self-signed.key -out /etc/h2o/ssl/self-signed.crt \
-          -subj "/C=US/ST=NY/L=NYC/O=IT/CN={{ ansible_fqdn }}"
+          -subj "/C=US/ST=NY/L=NYC/O=IT/CN={{ h2o_self_signed_certificate_cn }}"
   when: h2o_self_signed_cert_file.stat.exists == False
 
 - name: Create www directory
