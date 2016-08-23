@@ -3,6 +3,8 @@
 > Ansible role that sets up an automated [H2O](https://github.com/h2o/h2o) proxy for docker containers
 with automatic creation of Let's Encrypt certificates using [docker-gen](https://github.com/jwilder/docker-gen).
 
+I wrote about this on my blog: https://blog.cedricblondeau.com/2016/08/21/h2o-docker-reverse-proxy/.
+
 ## Prerequisites
 
 - Ansible 2.1+
