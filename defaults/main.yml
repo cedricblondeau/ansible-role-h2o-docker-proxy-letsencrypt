@@ -1,6 +1,7 @@
 ---
 h2o_image: lkwg82/h2o-http2-server
 h2o_self_signed_certificate_cn: "localhost"
+h2o_network_mode: bridge
 letsencrypt_image: cedricbl/letsencrypt-webroot
 letsencrypt_email: contact@example.net
 letsencrypt_mode: "production"

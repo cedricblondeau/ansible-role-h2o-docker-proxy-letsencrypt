@@ -36,6 +36,7 @@
     name: h2o
     state: started
     image: "{{ h2o_image }}"
+    network_mode: "{{ h2o_network_mode }}"
     ports:
      - "80:80"
      - "443:443"
